@@ -1,2 +1,9 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import { login } from '$lib/spotify';
+</script>
+
+<h1>Enhance Spotify</h1>
+<p>
+	Fancy UI stuff will follow soon. For now, I am just trying to figure out how to get auth working.
+</p>
+<button on:click={login}>Login</button>
