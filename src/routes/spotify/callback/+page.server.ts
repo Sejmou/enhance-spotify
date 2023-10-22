@@ -1,8 +1,9 @@
-import type { RequestHandler } from '@sveltejs/kit';
+// called upon redirect from spotify auth
+// TODO: there MUST be a better way to do this
 import { stateKey } from '$lib/server';
 import env from '$lib/env';
 import { SPOTIFY_CLIENT_SECRET } from '$env/static/private';
-import { json } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
 // as defined in https://developer.spotify.com/documentation/web-api/tutorials/code-flow#request-access-token
 // needs to be sent in x-www-form-urlencoded format
@@ -12,7 +13,7 @@ type AccessTokenRequestParams = {
 	grant_type: 'authorization_code';
 };
 
-export const GET: RequestHandler = async (request) => {
+export const load: PageServerLoad = async (request) => {
 	const state = request.url.searchParams.get('state');
 	const code = request.url.searchParams.get('code');
 	const storedState = request.cookies.get(stateKey);
@@ -49,7 +50,5 @@ export const GET: RequestHandler = async (request) => {
 	});
 
 	const accessToken = await response.json();
-	// console.log(accessToken);
-
-	return json(accessToken);
+	return accessToken;
 };
